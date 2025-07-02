@@ -1,1 +1,1 @@
-Practice spring-boot-jpa-starter in a simple example using PostgreSQL to store user in DB.
+Practice spring-boot-jpa-starter in a simple example using PostgreSQL to store user in DB. The PostgreSQL is expected to be installed an username with full acces with password to be added to application.properties file.
