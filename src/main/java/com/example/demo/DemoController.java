@@ -3,6 +3,8 @@ package com.example.demo;
 
 import com.example.demo.model.Person;
 import com.example.demo.repository.PersonRepository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class DemoController {
     }
 
     @GetMapping
+    @Transactional(isolation= Isolation.REPEATABLE_READ)
     public List<Person> getAllPersons() {
         return repository.findAll();
     }
