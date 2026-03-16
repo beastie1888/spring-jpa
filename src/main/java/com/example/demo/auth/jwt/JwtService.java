@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.auth.jwt;
 
 import java.security.Key;
 import java.util.Date;

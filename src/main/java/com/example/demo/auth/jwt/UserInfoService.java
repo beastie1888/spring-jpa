@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.auth.jwt;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;

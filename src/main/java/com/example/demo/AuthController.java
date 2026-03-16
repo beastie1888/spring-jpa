@@ -1,8 +1,11 @@
-package com.example.demo.auth;
+package com.example.demo;
 
-import com.example.demo.JwtService;
-import com.example.demo.UserInfoService;
+import com.example.demo.auth.AuthRequest;
+import com.example.demo.auth.TokenResponse;
+import com.example.demo.auth.jwt.JwtService;
+import com.example.demo.auth.jwt.UserInfoService;
 import com.example.demo.model.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,25 +31,23 @@ public class AuthController {
 
 
     @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome this endpoint is not secure";
+    public ResponseEntity<String> welcome() {
+        return ResponseEntity.ok("Welcome this endpoint is not secure");
     }
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody User userInfo) {
-        return service.addUser(userInfo);
+    public ResponseEntity<String> addNewUser(@RequestBody User userInfo) {
+        return ResponseEntity.ok(service.addUser(userInfo));
     }
 
-    // Removed the role checks here as they are already managed in SecurityConfig
-
     @PostMapping("/login")
-        public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        public ResponseEntity<TokenResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password())
         );
         if (authentication.isAuthenticated()) {
             String token = jwtService.generateToken(new User(authRequest.username(), authRequest.password(), List.of()));
-            return "{\"token\" : \"" + token + "\"}";
+            return ResponseEntity.ok(new TokenResponse(token));
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }
