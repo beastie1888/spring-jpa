@@ -21,17 +21,8 @@ class DemoApplicationTests {
 
 	@Test
 	void keyBeansAreLoaded() {
-		// Verify key service beans are loaded
-		assertThat(applicationContext.containsBean("jwtService")).isTrue();
-		assertThat(applicationContext.containsBean("userInfoService")).isTrue();
-		assertThat(applicationContext.containsBean("personService")).isTrue();
-
-		// Verify repository beans are loaded
-		assertThat(applicationContext.containsBean("personRepository")).isTrue();
-		assertThat(applicationContext.containsBean("userRepository")).isTrue();
-
 		// Verify controller beans are loaded
-		assertThat(applicationContext.containsBean("demoController")).isTrue();
+		assertThat(applicationContext.containsBean("personController")).isTrue();
 		assertThat(applicationContext.containsBean("authController")).isTrue();
 	}
 

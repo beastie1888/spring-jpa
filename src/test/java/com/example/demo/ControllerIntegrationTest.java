@@ -9,17 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = {
-    "security.jwt.secret-key=5367566859703373367639792F423F452848284D6251655468576D5A71347437",
-    "security.jwt.expiration-time=3600000"
-})
 class ControllerIntegrationTest {
 
     @Autowired
@@ -77,5 +72,18 @@ class ControllerIntegrationTest {
             }
         }
         assertThat(personFound).isTrue();
+    }
+
+    @Test
+    void testAddPersonWithInvalidToken() {
+        // Attempt to add a person with an invalid token
+        Person newPerson = new Person("Jane Doe", 25);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth("invalid.jwt.token");
+        HttpEntity<Person> request = new HttpEntity<>(newPerson, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/person", request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 }

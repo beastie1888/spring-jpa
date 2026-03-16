@@ -7,17 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@TestPropertySource(properties = {
-    "security.jwt.secret-key=5367566859703373367639792F423F452848284D6251655468576D5A71347437",
-    "security.jwt.expiration-time=3600000"
-})
 class JwtServiceTest {
 
     @Autowired

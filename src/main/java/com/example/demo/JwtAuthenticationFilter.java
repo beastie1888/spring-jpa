@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.auth.JwtAuthenticationException;
 import com.example.demo.auth.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -71,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
-            throw new ServletException("There was an error validating the token: " + exception.getMessage(), exception);
+            throw new JwtAuthenticationException("There was an error validating the token: " + exception.getMessage(), exception);
         }
     }
 }

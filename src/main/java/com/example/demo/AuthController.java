@@ -5,11 +5,11 @@ import com.example.demo.auth.TokenResponse;
 import com.example.demo.auth.jwt.JwtService;
 import com.example.demo.auth.jwt.UserInfoService;
 import com.example.demo.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-        public ResponseEntity<TokenResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password())
         );
@@ -49,7 +49,7 @@ public class AuthController {
             String token = jwtService.generateToken(new User(authRequest.username(), authRequest.password(), List.of()));
             return ResponseEntity.ok(new TokenResponse(token));
         } else {
-            throw new UsernameNotFoundException("Invalid user request!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
 }
